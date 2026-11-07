@@ -1,3 +1,7 @@
+/*
+  File        : Account.cpp
+  Description : Defines the Account class methods.
+*/
 #include "Account.h"
 #include <iostream>
 
