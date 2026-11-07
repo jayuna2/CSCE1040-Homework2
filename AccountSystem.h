@@ -16,9 +16,9 @@ class AccountSystem
         void deposit();     // deposit money into an existing account
         void withdraw();    // withdraw money from an existing account
         void transfer();    // transfer money from source to destination account
-        void print() const; //print acc data
-        void loadAccs();
-        void saveAccs() const;
+        void printAccounts() const; //print acc data
+        void loadAccounts();
+        void saveAccounts() const;
 
     private:
         Accounts accts;     // container that holds all the accounts
