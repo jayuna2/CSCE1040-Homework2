@@ -166,6 +166,20 @@ void AccountSystem::transfer()
              << " to destination account id " << destId << endl;
     }
 }
+/*
+  Function: PrintAccounts
+  Description: Prints the id name and balance 
+*/
+void AccountSystem::printAccounts() const {
+    cout << "\n===== All Accounts =====" << endl;
+    for (int i = 0; i < accts.size(); ++i) {
+        Account* acct = accts.at(i);
+        cout << "ID: " << acct->getAccountId()
+             << ", Name: " << acct->getCustomerName()
+             << ", Balance: $" << acct->getBalance() << endl;
+    }
+    cout << "========================" << endl;
+}
 
 /*
   Function    : loadAccounts
