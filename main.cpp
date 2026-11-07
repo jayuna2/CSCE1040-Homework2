@@ -1,112 +1,105 @@
 /*
-  File        : main.cpp
-  Description : A menu-driven program for managing bank accounts.
-  Author      : Tayler Wallace, 
-  Course      : CSCE 1040
-  Date        : Fall 2026
+  Author(s)   : Jayuna Khatiwada, Krishna Khanal, Tayler Wallace, <Member 4>
+  Course      : CSCE 1040.400 Fall 2026
+  Instructor  : Dr. Amar Maharjan
+  Date        : 11/06/2026
+  Description : This program implements a bank account system. The program
+                displays a menu of several operations and prompts users to
+                enter a selection to
+                    1. Add a new account
+                    2. Deposit into the account
+                    3. Withdraw from the account
+                    4. Transfer into the account
+                    5. Print a list of all accounts
+                    6. End transaction (Exit)
+  Tasks       :
+                <Part 1 member>:
+                    1) Account class (Account.h, Account.cpp)
+                <Part 2 member>:
+                    1) Accounts container class (Accounts.h, Accounts.cpp)
+                    2) Add new account and print all accounts
+                Krishna Khanal:
+                    1) Deposit, withdraw, and transfer operations
+                Tayler Wallace:
+                    1) Load accounts from file and save accounts to file
+                    2) main.cpp menu logic and makefile
 */
 
 #include <iostream>
 #include <limits>
-#include "Account.h"
-#include "Accounts.h"
 #include "AccountSystem.h"
 
 using namespace std;
 
-// Function prototypes
-void displayMenu();
-void handleDeposit(AccountSystem& system);
-void handleWithdraw(AccountSystem& system);
-void handleTransfer(AccountSystem& system);
-void handlePrintAccounts(const AccountSystem& system);
+int main()
+{
+    AccountSystem bank;     // object that runs all the bank operations
+    int choice = 0;         // menu option entered by the user
 
-int main() {
-    AccountSystem system;
-    int choice;
+    // display department, course, and student information
+    cout << "+----------------------------------------------+" << endl;
+    cout << "|       Computer Science and Engineering       |" << endl;
+    cout << "|        CSCE 1040 - Computer Science II       |" << endl;
+    cout << "|   Jayuna Khatiwada  EUID  euid@my.unt.edu    |" << endl;
+    cout << "|   Krishna Khanal    kk1374  krishnakhanal2@my.unt.edu    |" << endl;
+    cout << "|   Tayler Wallace    EUID  euid@my.unt.edu    |" << endl;
+    cout << "|   Member 4          EUID  euid@my.unt.edu    |" << endl;
+    cout << "+----------------------------------------------+" << endl;
 
-    // Load accounts from file (if it exists)
-    system.loadAccounts();
+    // load customer accounts from the file when the system starts
+    bank.loadAccounts("accounts.dat");
 
-    do {
-        displayMenu();
-        cout << "Enter your choice: ";
+    // keep showing the menu until the user chooses to exit
+    do
+    {
+        // display the menu
+        cout << endl;
+        cout << "+-------------------------------------+" << endl;
+        cout << "| Enter account selection             |" << endl;
+        cout << "| 1 : Add new account                 |" << endl;
+        cout << "| 2 : Deposit into account            |" << endl;
+        cout << "| 3 : Withdraw from account           |" << endl;
+        cout << "| 4 : Transfer into account           |" << endl;
+        cout << "| 5 : Print a list of all accounts    |" << endl;
+        cout << "| 6 : End transaction (Exit)          |" << endl;
+        cout << "+-------------------------------------+" << endl;
+        cout << "> ";
 
-        // Input validation for menu choice
-        if (!(cin >> choice)) {
+        // read the menu choice; if it is not a number, clear the input
+        if (!(cin >> choice))
+        {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input. Please enter a number." << endl;
-            continue;
+            choice = 0;
         }
 
-        // Process user choice
-        switch (choice) {
+        // process the user's choice
+        switch (choice)
+        {
             case 1:
-                handleDeposit(system);
+                bank.addAccount();
                 break;
             case 2:
-                handleWithdraw(system);
+                bank.deposit();
                 break;
             case 3:
-                handleTransfer(system);
+                bank.withdraw();
                 break;
             case 4:
-                handlePrintAccounts(system);
+                bank.transfer();
                 break;
             case 5:
-                cout << "Exiting program. Goodbye!" << endl;
+                bank.printAccounts();
+                break;
+            case 6:
+                // save customer accounts to the file before exiting
+                bank.saveAccounts("accounts.dat");
+                cout << "Thank you for running the program. Goodbye!" << endl;
                 break;
             default:
-                cout << "Invalid choice. Please try again." << endl;
+                cout << "Error: Invalid selection. Enter a value between 1-6." << endl;
         }
-    } while (choice != 5);
+    } while (choice != 6);
 
     return 0;
-}
-
-/*
-  Function    : displayMenu
-  Description : Displays the menu options to the user.
-*/
-void displayMenu() {
-    cout << "\n===== Bank Account Management System =====" << endl;
-    cout << "1. Deposit" << endl;
-    cout << "2. Withdraw" << endl;
-    cout << "3. Transfer" << endl;
-    cout << "4. Print All Accounts" << endl;
-    cout << "5. Exit" << endl;
-    cout << "==========================================" << endl;
-}
-
-/*
-  Function    : handleDeposit
-  Description : Handles the deposit operation.
-*/
-void handleDeposit(AccountSystem& system) {
-    system.deposit();
-}
-
-/*
-  Function    : handleWithdraw
-  Description : Handles the withdraw operation.
-*/
-void handleWithdraw(AccountSystem& system) {
-    system.withdraw();
-}
-
-/*
-  Function    : handleTransfer
-  Description : Handles the transfer operation.
-*/
-void handleTransfer(AccountSystem& system) {
-    system.transfer();
-}
-
-/*
-  Function    : handlePrintAccounts
-  Description : Prints all accounts in the system.
-*/
-void handlePrintAccounts(const AccountSystem& system) {
-    system.printAccounts();
 }

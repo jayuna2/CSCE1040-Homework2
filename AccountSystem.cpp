@@ -5,9 +5,61 @@
 
 #include <iostream>
 #include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "AccountSystem.h"
 
 using namespace std;
+
+/*
+  Function    : addAccount
+  Description : Prompts the user for an account id, customer name, and
+                initial deposit. If the id is not already used, a new
+                dynamic Account is created, filled in with mutators, and
+                added to the container. A status message is printed.
+*/
+void AccountSystem::addAccount()
+{
+    int acctId;        // account id entered by the user
+    string name;       // customer account name (can have spaces)
+    float amount;      // initial deposit amount
+    Account* acct;     // pointer to the new dynamic account
+
+    // read the account id
+    cout << "Enter account id: ";
+    cin >> acctId;
+
+    // do not add the account if the id already exists
+    if (accts.findAcct(acctId) != NULL)
+    {
+        cout << "Error: account id " << acctId << " already exists." << endl;
+        return;
+    }
+
+    // read the customer name (ignore the leftover newline first)
+    cout << "Enter customer account name: ";
+    cin.ignore();
+    getline(cin, name);
+
+    // read the initial deposit amount
+    cout << "Enter initial deposit amount: $ ";
+    cin >> amount;
+
+    // create the dynamic account and set its data using mutators
+    acct = new Account();
+    acct->setAccountId(acctId);
+    acct->setCustomerName(name);
+    acct->setBalance(amount);
+
+    // add the account to the container
+    accts.addAcct(acct);
+
+    // print status message with 2 decimal places
+    cout << fixed << setprecision(2);
+    cout << "Added new account id " << acctId
+         << " with initial balance $" << amount << endl;
+}
 
 /*
   Function    : deposit
@@ -166,76 +218,115 @@ void AccountSystem::transfer()
              << " to destination account id " << destId << endl;
     }
 }
+
 /*
-  Function: PrintAccounts
-  Description: Prints the id name and balance 
+  Function    : printAccounts
+  Description : Prints the account id, customer name, and balance of
+                every account in a table. Prints a message if there
+                are no accounts.
 */
-void AccountSystem::printAccounts() const {
-    cout << "\n===== All Accounts =====" << endl;
-    for (int i = 0; i < accts.size(); ++i) {
-        Account* acct = accts.at(i);
-        cout << "ID: " << acct->getAccountId()
-             << ", Name: " << acct->getCustomerName()
-             << ", Balance: $" << acct->getBalance() << endl;
+void AccountSystem::printAccounts() const
+{
+    Account* acct;     // pointer to the current account being printed
+    string line = "+-------------------------------------------------------+";
+
+    // nothing to print if there are no accounts
+    if (accts.size() == 0)
+    {
+        cout << "Empty account list." << endl;
+        return;
     }
-    cout << "========================" << endl;
+
+    // print the table header
+    cout << line << endl;
+    cout << "| Acct | Customer Account Name          | Balance        |" << endl;
+    cout << line << endl;
+
+    // print one row for each account
+    cout << fixed << setprecision(2);
+    for (int i = 0; i < accts.size(); ++i)
+    {
+        acct = accts.at(i);
+        cout << "| " << setw(4) << acct->getAccountId()
+             << " | " << left << setw(30) << acct->getCustomerName()
+             << " | $ " << right << setw(12) << acct->getBalance()
+             << " |" << endl;
+        cout << line << endl;
+    }
 }
 
 /*
   Function    : loadAccounts
-  Description : Loads accounts from a file named "accounts.dat".
-                Each line in the file should be in the format:
-                account_id,balance,customer_name
+  Description : Loads accounts from the given file. Each line in the
+                file has the format: account id,balance,customer name
 */
-void AccountSystem::loadAccounts()
+void AccountSystem::loadAccounts(string fileName)
 {
-    ifstream inFile("accounts.dat");
+    ifstream inFile;       // input file stream
+    string line;           // one line read from the file
+    string idStr;          // account id part of the line
+    string balanceStr;     // balance part of the line
+    string name;           // customer name part of the line
+    Account* acct;         // pointer to the new dynamic account
+
+    // open the file and stop if it cannot be opened
+    inFile.open(fileName.c_str());
     if (!inFile.is_open())
     {
-        cerr << "Error: Could not open file 'accounts.dat' for reading." << endl;
+        cout << "Error: unable to open " << fileName << "." << endl;
         return;
     }
 
-    string line;
+    // read the file one line at a time
     while (getline(inFile, line))
     {
+        // skip empty lines
+        if (line == "")
+        {
+            continue;
+        }
+
+        // split the line by commas
         istringstream iss(line);
-        string accountIdStr, balanceStr, customerName;
-        getline(iss, accountIdStr, ',');
+        getline(iss, idStr, ',');
         getline(iss, balanceStr, ',');
-        getline(iss, customerName, ',');
+        getline(iss, name);
 
-        int accountId = stoi(accountIdStr);
-        float balance = stof(balanceStr);
-
-        accts.addAccount(accountId, balance, customerName);
+        // create the account and add it to the container
+        acct = new Account(stoi(idStr), name, stof(balanceStr));
+        accts.addAcct(acct);
     }
 
-    cout << "Accounts loaded successfully from 'accounts.dat'." << endl;
+    cout << "Customer accounts loaded successfully." << endl;
     inFile.close();
 }
 
 /*
   Function    : saveAccounts
-  Description : Saves all accounts to a file named "accounts.dat".
-                Each line in the file will be in the format:
-                account_id,balance,customer_name
+  Description : Saves all accounts to the given file. Each line in the
+                file has the format: account id,balance,customer name
 */
-void AccountSystem::saveAccounts()
+void AccountSystem::saveAccounts(string fileName) const
 {
-    ofstream outFile("accounts.dat");
+    ofstream outFile;      // output file stream
+    Account* acct;         // pointer to the current account being saved
+
+    // open the file and stop if it cannot be opened
+    outFile.open(fileName.c_str());
     if (!outFile.is_open())
     {
-        cerr << "Error: Could not open file 'accounts.dat' for writing." << endl;
+        cout << "Error: unable to open " << fileName << " for writing." << endl;
         return;
     }
 
-    for (int i = 0; i < accts.size(); i++)
+    // write each account on its own line
+    outFile << fixed << setprecision(2);
+    for (int i = 0; i < accts.size(); ++i)
     {
-        Account* acct = accts.getAccount(i);
-        outFile << acct->getId() << "," << acct->getBalance() << "," << acct->getCustomerName() << endl;
+        acct = accts.at(i);
+        outFile << acct->getAccountId() << "," << acct->getBalance()
+                << "," << acct->getCustomerName() << endl;
     }
 
-    cout << "Accounts saved successfully to 'accounts.dat'." << endl;
     outFile.close();
 }

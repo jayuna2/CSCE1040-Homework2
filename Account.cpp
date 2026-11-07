@@ -102,7 +102,7 @@ bool Account::withdraw(float amount) {
 // overloaded += operator for transfer (destAcct += srcAcct)
 Account& Account::operator+=(Account& srcAcct) {
     float transferAmount = 0.0f;
-    std::cout << "Enter transfer amount: ";
+    std::cout << "Enter the transfer amount: $ ";
     if (std::cin >> transferAmount) {
         if (transferAmount <= 0.0f) {
             std::cout << "Transfer failed: Amount must be greater than zero." << std::endl;
