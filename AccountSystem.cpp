@@ -166,3 +166,62 @@ void AccountSystem::transfer()
              << " to destination account id " << destId << endl;
     }
 }
+
+/*
+  Function    : loadAccounts
+  Description : Loads accounts from a file named "accounts.dat".
+                Each line in the file should be in the format:
+                account_id,balance,customer_name
+*/
+void AccountSystem::loadAccounts()
+{
+    ifstream inFile("accounts.dat");
+    if (!inFile.is_open())
+    {
+        cerr << "Error: Could not open file 'accounts.dat' for reading." << endl;
+        return;
+    }
+
+    string line;
+    while (getline(inFile, line))
+    {
+        istringstream iss(line);
+        string accountIdStr, balanceStr, customerName;
+        getline(iss, accountIdStr, ',');
+        getline(iss, balanceStr, ',');
+        getline(iss, customerName, ',');
+
+        int accountId = stoi(accountIdStr);
+        float balance = stof(balanceStr);
+
+        accts.addAccount(accountId, balance, customerName);
+    }
+
+    cout << "Accounts loaded successfully from 'accounts.dat'." << endl;
+    inFile.close();
+}
+
+/*
+  Function    : saveAccounts
+  Description : Saves all accounts to a file named "accounts.dat".
+                Each line in the file will be in the format:
+                account_id,balance,customer_name
+*/
+void AccountSystem::saveAccounts()
+{
+    ofstream outFile("accounts.dat");
+    if (!outFile.is_open())
+    {
+        cerr << "Error: Could not open file 'accounts.dat' for writing." << endl;
+        return;
+    }
+
+    for (int i = 0; i < accts.size(); i++)
+    {
+        Account* acct = accts.getAccount(i);
+        outFile << acct->getId() << "," << acct->getBalance() << "," << acct->getCustomerName() << endl;
+    }
+
+    cout << "Accounts saved successfully to 'accounts.dat'." << endl;
+    outFile.close();
+}
