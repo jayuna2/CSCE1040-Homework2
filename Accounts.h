@@ -1,26 +1,26 @@
+/*
+  File        : Accounts.h
+  Description : Declares the Accounts class, a container class that
+                holds pointers to dynamic objects of the Account class.
+*/
+
 #ifndef ACCOUNTS_H
 #define ACCOUNTS_H
 
+#include <vector>
 #include "Account.h"
-#include<vector>
 
-class Accounts {
+class Accounts
+{
     private:
-    vector<Account *> acc; // pointer for holding object of account class
+        std::vector<Account *> acc;   // pointers to dynamic Account objects
 
     public:
-    ~Accounts(){
-        for(int i = 0; i < acc.size(); ++i)
-        {
-            delete acc[i];
-        }
-    }
-
-    void Accounts::addAcct(Account* val){
-        acc.push_back(val);
-    }
-
-    
+        ~Accounts();                              // delete all dynamic accounts
+        void addAcct(Account* val);               // add an account to the vector
+        Account* findAcct(const int acctId);      // find account by id, NULL if not found
+        Account* at(const int i) const;           // return account at index i
+        int size() const;                         // return number of accounts
 };
 
-#endif 
+#endif
