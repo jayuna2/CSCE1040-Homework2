@@ -13,9 +13,9 @@
                     5. Print a list of all accounts
                     6. End transaction (Exit)
   Tasks       :
-                <Part 1 member>:
+                Sylvie Martinez:
                     1) Account class (Account.h, Account.cpp)
-                <Part 2 member>:
+                Jayuna Khatiwada:
                     1) Accounts container class (Accounts.h, Accounts.cpp)
                     2) Add new account and print all accounts
                 Krishna Khanal:
