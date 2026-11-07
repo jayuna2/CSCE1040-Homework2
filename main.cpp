@@ -44,7 +44,7 @@ int main()
     cout << "|   Krishna Khanal    kk1374  krishnakhanal2@my.unt.edu    |" << endl;
     cout << "|   Tayler Wallace    tdw0491  taylerwallace@my.unt.edu    |" << endl;
     cout << "|   Sylvie Martinez   ngm0076  nicolasmartinez@my.unt.edu  |" << endl;
-    cout << "+----------------------------------------------+" << endl;
+    cout << "+----------------------------------------------------------+" << endl;
 
     // load customer accounts from the file when the system starts
     bank.loadAccounts("accounts.dat");

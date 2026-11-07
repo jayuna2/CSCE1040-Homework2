@@ -1,12 +1,18 @@
+/*
+  File        : Account.h
+  Description : Declares the Account class, which stores one customer's
+                bank account information (id, name, and balance).
+*/
+
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
 #include <string>
 class Account {
     private:
-        int* accountId;
-        std::string customerName;
-        float balance;
+        int* accountId;             // pointer to dynamic memory holding the account id
+        std::string customerName;   // customer account name (can have spaces)
+        float balance;              // current account balance
 
     public:
         // constructors and destructor
