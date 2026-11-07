@@ -1,5 +1,5 @@
 /*
-  Author(s)   : Jayuna Khatiwada, Krishna Khanal, Tayler Wallace, <Member 4>
+  Author(s)   : Jayuna Khatiwada, Krishna Khanal, Tayler Wallace, Sylvie Martinez
   Course      : CSCE 1040.400 Fall 2026
   Instructor  : Dr. Amar Maharjan
   Date        : 11/06/2026
@@ -37,13 +37,13 @@ int main()
     int choice = 0;         // menu option entered by the user
 
     // display department, course, and student information
-    cout << "+----------------------------------------------+" << endl;
-    cout << "|       Computer Science and Engineering       |" << endl;
-    cout << "|        CSCE 1040 - Computer Science II       |" << endl;
-    cout << "|   Jayuna Khatiwada  EUID  euid@my.unt.edu    |" << endl;
+    cout << "+----------------------------------------------------------+" << endl;
+    cout << "|       Computer Science and Engineering                   |" << endl;
+    cout << "|        CSCE 1040 - Computer Science II                   |" << endl;
+    cout << "|   Jayuna Khatiwada  jk1306 jayunakhatiwada@my.unt.edu    |" << endl;
     cout << "|   Krishna Khanal    kk1374  krishnakhanal2@my.unt.edu    |" << endl;
-    cout << "|   Tayler Wallace    EUID  euid@my.unt.edu    |" << endl;
-    cout << "|   Member 4          EUID  euid@my.unt.edu    |" << endl;
+    cout << "|   Tayler Wallace    tdw0491  taylerwallace@my.unt.edu    |" << endl;
+    cout << "|   Sylvie Martinez   ngm0076  nicolasmartinez@my.unt.edu  |" << endl;
     cout << "+----------------------------------------------+" << endl;
 
     // load customer accounts from the file when the system starts
